@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderly Travel</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+</head>
+<body>
+
+    <!-- Frost Overlay -->
+    <div id="frostOverlay"></div>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="brand">WANDERLY</div>
+        <nav class="nav-links">
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Tour</a>
+            <a href="#">Contact</a>
+        </nav>
+        <button id="loginBtn" class="btn-login">Login</button>
+    </header>
+
+    <!-- HERO Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="assets/hero.jpg" alt="">
+        </div>
+
+        <h1 class="hero-title">Extraordinary natural<br>and cultural charm</h1>
+        <p class="hero-subtext">Exploring the world is an unforgettable adventure.</p>
+
+        <!-- Search Bar -->
+        <div id="mainSearch" class="search-card">
+            <input type="date" id="searchDate">
+            <select id="searchBudget">
+                <option>Budget</option>
+                <option>$200 - $500</option>
+                <option>$500 - $1000</option>
+            </select>
+            <select id="searchGuests">
+                <option>Guests</option>
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+            </select>
+            <button id="quickSearch" class="search-btn">Search</button>
+        </div>
+
+    </section>
+
+    <!-- Tour Packages -->
+    <section class="packages">
+        <div class="section-header">
+            <div>
+                <p class="sub-label">Tour packages</p>
+                <h2 class="section-title">Our tourist destination</h2>
+            </div>
+            <p class="section-desc">Our tourist destinations offer an unrivaled blend of beauty and cultural richness.</p>
+        </div>
+
+        <div id="places" class="place-grid"></div>
+
+        <button class="view-more">View more</button>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+        <h2 class="section-title">One click for you</h2>
+
+        <div class="hiw-grid">
+            <div class="hiw-card">
+                <h3>Find your destination</h3>
+                <p>Discover your dream destination where adventure awaits.</p>
+            </div>
+            <div class="hiw-card">
+                <h3>Book a ticket</h3>
+                <p>Book tickets to your destination with ease.</p>
+            </div>
+            <div class="hiw-card">
+                <h3>Make payment</h3>
+                <p>We offer a variety of payment options.</p>
+            </div>
+            <div class="hiw-card">
+                <h3>Explore destination</h3>
+                <p>Immerse yourself in sights, sounds and tastes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Indonesian Tourism -->
+    <section class="indonesia">
+        <div class="section-header">
+            <div>
+                <p class="sub-label">Best location</p>
+                <h2 class="section-title">Indonesian tourism</h2>
+            </div>
+            <p class="section-desc">Extraordinary natural beauty, rich culture and friendliness of the local people.</p>
+        </div>
+
+        <div class="indo-grid">
+            <div class="indo-card"><img src="assets/indo1.jpg"><div class="caption">Bali Beach Tourism</div></div>
+            <div class="indo-card"><img src="assets/indo2.jpg"><div class="caption">Bromo Tengger Tour</div></div>
+            <div class="indo-card"><img src="assets/indo3.jpg"><div class="caption">Borobudur Temple Tour</div></div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="f-col">
+                <h3>About</h3>
+                <a href="#">About Us</a>
+                <a href="#">Blog</a>
+                <a href="#">Careers</a>
+                <a href="#">Jobs</a>
+            </div>
+
+            <div class="f-col">
+                <h3>Support</h3>
+                <a href="#">Contact us</a>
+                <a href="#">Online Chat</a>
+                <a href="#">Whatsapp</a>
+                <a href="#">Ticketing</a>
+            </div>
+
+            <div class="f-col">
+                <h3>FAQ</h3>
+                <a href="#">Account</a>
+                <a href="#">Booking</a>
+                <a href="#">Payments</a>
+                <a href="#">Terms & Conditions</a>
+            </div>
+
+            <div class="f-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe now for travel inspiration.</p>
+                <div class="newsletter">
+                    <input type="email" placeholder="Enter your email">
+                    <button>Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="copy">© 2024 Wanderly. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Login Panel -->
+    <div id="loginPanel" class="login-panel" aria-hidden="true">
+        <button id="closeLogin" class="close-btn">✕</button>
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button id="loginSubmit" class="login-submit">Login</button>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="detail-modal" aria-hidden="true">
+        <div class="detail-content">
+            <button id="closeModal" class="close-btn">✕</button>
+            <img id="modalImg">
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesc"></p>
+
+            <label>From</label>
+            <input type="date" id="modalFrom">
+
+            <label>To</label>
+            <input type="date" id="modalTo">
+
+            <label>Guests</label>
+            <select id="modalGuests">
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+            </select>
+
+            <button id="bookNow" class="book-btn">Book Now</button>
+        </div>
+    </div>
+
+    <!-- Animated background -->
+    <div class="animation-wrapper">
+        <div class="stagger-visualizer">
+            <div class="cursor color-red"></div>
+            <div class="dots-wrapper"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
