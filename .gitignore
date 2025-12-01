@@ -1,0 +1,85 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# Local environment variables
+*.env
+.env.*
+.envrc
+
+# --- FastAPI / UVicorn / Logs ---
+logs/
+*.log
+*.pid
+
+# SQLite (if used)
+*.db
+*.sqlite3
+
+# --- AWS ---
+# AWS CLI credentials
+.aws/
+*.pem
+*.key
+*.crt
+
+# AWS SAM / CDK outputs
+.aws-sam/
+cdk.out/
+
+# CloudFormation generated files
+*.template.json
+
+# --- Terraform ---
+# Local terraform state
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform cache & modules
+.terraform/
+.terraform.lock.hcl
+
+# Terraform variables (sensitive)
+terraform.tfvars
+*.auto.tfvars
+
+# Terraform plan files
+*.plan
+
+# --- Docker ---
+docker-compose.override.yml
+*.tar
+*~dockerfile
+
+# --- VSCode / Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS-specific ---
+.DS_Store
+Thumbs.db
