@@ -9,7 +9,7 @@ __pycache__/
 dist/
 build/
 *.so
-
+secrets/
 # Virtual environments
 venv/
 env/
