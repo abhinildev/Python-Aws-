@@ -8,178 +8,256 @@
   <!-- anime.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
-  <link rel="stylesheet" href="/static/styles.css">
+  <!-- Inline CSS -->
+  <style>
+/* =========================
+   styles.css — merged inline
+   ========================= */
+
+/* THEME VARIABLES */
+:root{
+  --bg: #08090b;
+  --panel: rgba(20,20,22,0.55);
+  --panel-strong: rgba(24,24,26,0.92);
+  --muted: #9aa3ad;
+  --text: #e8eef6;
+  --glass: rgba(255,255,255,0.03);
+  --accent: #00b4ff;
+  --card-shadow: 0 18px 48px rgba(0,0,0,0.6);
+}
+:root[data-theme="light"]{
+  --bg: linear-gradient(180deg,#faf7df,#fdfce8);
+  --panel: rgba(255,255,255,0.45);
+  --panel-strong: rgba(255,255,255,0.92);
+  --muted: #666;
+  --text: #111;
+  --glass: rgba(255,255,255,0.58);
+  --card-shadow: 0 18px 48px rgba(0,0,0,0.08);
+}
+
+/* base */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.4;
+}
+
+/* container */
+.container{width:92%;max-width:1300px;margin:0 auto}
+
+/* animation wrapper */
+.animation-wrapper{
+  position:fixed;inset:0;pointer-events:none;z-index:0;display:flex;
+  align-items:center;justify-content:center;overflow:hidden;opacity:0.9;
+}
+.stagger-visualizer{width:1200px;height:600px;max-width:160vw;max-height:110vh;position:relative}
+.dots-wrapper{position:absolute;inset:0;display:flex;flex-wrap:wrap;justify-content:center;padding:18px}
+.dot{width:16px;height:16px;margin:10px;border-radius:50%;background:rgba(255,255,255,0.06);box-shadow:0 6px 18px rgba(0,0,0,0.4)}
+.stagger-visualizer .cursor{position:absolute;width:36px;height:36px;border-radius:50%;background:var(--accent)}
+
+/* frost overlay */
+#frostOverlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(12px);opacity:0;pointer-events:none;
+  transition:opacity .18s ease;z-index:50;
+}
+#frostOverlay.active{opacity:1;pointer-events:auto}
+
+/* nav */
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:18px 12px;z-index:60;position:relative}
+.brand{font-weight:800;font-size:22px}
+.nav-links{display:flex;gap:18px}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:500}
+.btn-primary{background:var(--panel-strong);border-radius:22px;padding:8px 14px;cursor:pointer}
+.btn-ghost{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;color:var(--text)}
+
+/* hero */
+.hero{margin:18px auto;border-radius:20px;padding:16px;background:var(--panel);backdrop-filter:blur(18px);box-shadow:var(--card-shadow);position:relative;z-index:10}
+.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+.hero-bg{width:100%;height:260px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,0.6)}
+.hero-bg img{width:100%;height:100%;object-fit:cover}
+
+/* search */
+.search-card{margin-top:16px;display:flex;gap:10px;padding:10px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.03)}
+.search-card input,.search-card select{padding:10px 12px;border-radius:8px;background:transparent;color:var(--text)}
+.search-btn{padding:10px 14px;border-radius:10px;background:var(--accent);color:#002}
+
+/* cards + sections */
+.place-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:22px;position:relative;z-index:10}
+.place{border-radius:12px;overflow:hidden;position:relative;cursor:pointer;background:#111}
+.place img{width:100%;height:320px;object-fit:cover}
+
+.hiw-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+
+/* Indonesia section */
+.indo-grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.indo-card img{width:100%;height:260px;object-fit:cover}
+
+/* footer */
+.footer{margin-top:36px;padding:24px 12px;color:var(--muted)}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.footer-divider{height:1px;background:rgba(255,255,255,0.06);margin-bottom:18px}
+
+/* panels */
+.login-panel,.detail-modal{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:var(--panel-strong);padding:24px;border-radius:14px;
+  width:90%;max-width:420px;z-index:80;opacity:0;pointer-events:none;
+  transition:opacity .18s;
+}
+.login-panel.active,.detail-modal.active{opacity:1;pointer-events:auto}
+
+.close-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+
+  </style>
 </head>
+
 <body>
 
-  <!-- Animated background (visualizer) -->
-  <div class="animation-wrapper" aria-hidden="true">
-    <div class="stagger-visualizer" role="presentation">
+  <!-- ANIMATED BACKGROUND -->
+  <div class="animation-wrapper">
+    <div class="stagger-visualizer">
       <div class="cursor"></div>
       <div class="dots-wrapper"></div>
     </div>
   </div>
 
-  <!-- Frost overlay for modals/login (covers page to blur it) -->
-  <div id="frostOverlay" aria-hidden="true"></div>
+  <!-- OVERLAY -->
+  <div id="frostOverlay"></div>
 
   <!-- NAV -->
   <header class="navbar container">
     <div class="brand">WANDERLY</div>
-
     <nav class="nav-links">
       <a href="#packages">About</a>
       <a href="#how">Services</a>
       <a href="#packages">Tour</a>
       <a href="#contact">Contact</a>
     </nav>
-
     <div class="controls">
-      <button id="themeToggle" class="btn-ghost" aria-label="Toggle theme">Light</button>
+      <button id="themeToggle" class="btn-ghost">Light</button>
       <button id="loginBtn" class="btn-primary">Login</button>
     </div>
   </header>
 
   <!-- HERO -->
-  <main>
-    <section class="hero container" aria-label="Hero">
-      <div class="hero-grid">
-        <div class="hero-left">
-          <h1 class="hero-title">Extraordinary natural<br>and cultural charm</h1>
-          <p class="hero-subtext">Exploring the world is an unforgettable adventure.</p>
+  <section class="hero container">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1 class="hero-title">Extraordinary natural<br>and cultural charm</h1>
+        <p class="hero-subtext">Exploring the world is an unforgettable adventure.</p>
 
-          <div class="search-card" role="search">
-            <input id="searchDate" type="date" aria-label="Date">
-            <select id="searchBudget" aria-label="Budget">
-              <option value="">Budget</option>
-              <option>$200 - $500</option>
-              <option>$500 - $1000</option>
-            </select>
-            <select id="searchGuests" aria-label="Guests">
-              <option value="">Guests</option>
-              <option>1 Guest</option>
-              <option>2 Guests</option>
-            </select>
-            <button id="quickSearch" class="search-btn">Search</button>
-          </div>
-        </div>
-
-        <div class="hero-right">
-          <div class="hero-bg">
-            <img id="heroImg" src="" alt="hero" loading="lazy">
-          </div>
+        <div class="search-card">
+          <input type="date">
+          <select><option>Budget</option><option>$200-500</option></select>
+          <select><option>Guests</option><option>1</option></select>
+          <button class="search-btn">Search</button>
         </div>
       </div>
-    </section>
 
-    <!-- PACKAGES -->
-    <section id="packages" class="packages container">
-      <div class="section-head">
-        <div>
-          <p class="sub-label">Tour packages</p>
-          <h2 class="section-title">Our tourist destination</h2>
+      <div class="hero-right">
+        <div class="hero-bg">
+          <img id="heroImg" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200" alt="">
         </div>
-        <p class="section-desc">Our tourist destinations offer an unrivaled blend of natural beauty and cultural richness.</p>
       </div>
+    </div>
+  </section>
 
-      <div id="places" class="place-grid" aria-live="polite"></div>
+  <!-- PACKAGES -->
+  <section id="packages" class="packages container">
+    <h2 class="section-title">Our tourist destination</h2>
+    <div id="places" class="place-grid"></div>
+  </section>
 
-      <div class="center">
-        <button class="view-more">View more</button>
-      </div>
-    </section>
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how-it-works container">
+    <h2 class="section-title">One click for you</h2>
+    <div class="hiw-grid">
+      <div class="hiw-card">Find your destination</div>
+      <div class="hiw-card">Book a ticket</div>
+      <div class="hiw-card">Make payment</div>
+      <div class="hiw-card">Explore</div>
+    </div>
+  </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how" class="how-it-works container">
-      <h2 class="section-title">One click for you</h2>
-      <div class="hiw-grid">
-        <div class="hiw-card"><h3>Find your destination</h3><p>Discover your dream destination.</p></div>
-        <div class="hiw-card"><h3>Book a ticket</h3><p>Book tickets quickly and securely.</p></div>
-        <div class="hiw-card"><h3>Make payment</h3><p>Multiple payment options available.</p></div>
-        <div class="hiw-card"><h3>Explore destination</h3><p>Immerse yourself in local culture.</p></div>
-      </div>
-    </section>
-
-    <!-- INDONESIA -->
-    <section class="indonesia container">
-      <div class="section-head">
-        <div>
-          <p class="sub-label">Best location</p>
-          <h2 class="section-title">Indonesian tourism</h2>
-        </div>
-        <p class="section-desc">Extraordinary natural beauty, rich culture and friendly locals.</p>
-      </div>
-
-      <div class="indo-grid">
-        <div class="indo-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=60" alt=""><div class="caption">Bali Beach Tourism</div></div>
-        <div class="indo-card"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60" alt=""><div class="caption">Bromo Tengger Tour</div></div>
-        <div class="indo-card"><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1200&q=60" alt=""><div class="caption">Borobudur Temple Tour</div></div>
-      </div>
-    </section>
-
-  </main>
+  <!-- INDONESIA -->
+  <section class="indonesia container">
+    <h2 class="section-title">Indonesian tourism</h2>
+    <div class="indo-grid">
+      <div class="indo-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200"></div>
+      <div class="indo-card"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200"></div>
+      <div class="indo-card"><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1200"></div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="footer container">
-    <div class="footer-divider" aria-hidden="true"></div>
-    <div class="footer-grid">
-      <div class="f-col"><h3>About</h3><a href="#">About Us</a><a href="#">Blog</a></div>
-      <div class="f-col"><h3>Support</h3><a href="#">Contact</a><a href="#">Online Chat</a></div>
-      <div class="f-col"><h3>FAQ</h3><a href="#">Booking</a><a href="#">Payments</a></div>
-      <div class="f-col">
-        <h3>Newsletter</h3>
-        <p>Subscribe for travel inspiration.</p>
-        <form id="newsletterForm" class="newsletter" action="javascript:void(0)" novalidate>
-          <input id="newsletterEmail" type="email" placeholder="Enter your email" required>
-          <button id="newsletterSubmit" type="submit">Submit</button>
-        </form>
-        <p id="newsletterMsg" class="newsletter-msg" aria-live="polite"></p>
-      </div>
-    </div>
-    <p class="copy">© 2025 Wanderly. All Rights Reserved.</p>
+    <div class="footer-divider"></div>
+    <p>© 2025 Wanderly. All Rights Reserved.</p>
   </footer>
 
-  <!-- Login Panel -->
-  <div id="loginPanel" class="login-panel" aria-hidden="true">
-    <button id="closeLogin" class="close-btn" aria-label="Close">✕</button>
+  <!-- LOGIN -->
+  <div id="loginPanel" class="login-panel">
+    <button class="close-btn">✕</button>
     <h3>Login</h3>
-    <input id="loginEmail" type="email" placeholder="Email">
-    <input id="loginPass" type="password" placeholder="Password">
-    <div class="login-actions">
-      <button id="loginSubmit" class="login-submit">Login</button>
-      <button id="openSignup" class="signup-link">Sign up</button>
-    </div>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
   </div>
 
-  <!-- Sign Up Panel -->
-  <div id="signupPanel" class="login-panel" aria-hidden="true">
-    <button id="closeSignup" class="close-btn" aria-label="Close">✕</button>
-    <h3>Sign Up</h3>
-    <input id="signupName" type="text" placeholder="Full name">
-    <input id="signupEmail" type="email" placeholder="Email">
-    <input id="signupPass" type="password" placeholder="Password">
-    <div class="login-actions">
-      <button id="signupSubmit" class="login-submit">Create account</button>
-    </div>
-  </div>
+  <!-- Inline JS -->
+  <script>
+/* =======================
+   script.js merged inline
+   ======================= */
 
-  <!-- Detail Modal -->
-  <div id="detailModal" class="detail-modal" aria-hidden="true">
-    <div class="detail-content">
-      <button id="closeModal" class="close-btn" aria-label="Close">✕</button>
-      <img id="modalImg" src="" alt="">
-      <h3 id="modalTitle"></h3>
-      <p id="modalDesc"></p>
-      <label>From</label>
-      <input id="modalFrom" type="date">
-      <label>To</label>
-      <input id="modalTo" type="date">
-      <label>Guests</label>
-      <select id="modalGuests"><option>1 Guest</option><option>2 Guests</option></select>
-      <button id="bookNow" class="book-btn">Book Now</button>
-    </div>
-  </div>
+/* DOT GRID ANIMATION */
+const dotsWrapper = document.querySelector('.dots-wrapper');
+for(let i=0;i<240;i++){
+  const d=document.createElement("div");
+  d.className="dot";
+  dotsWrapper.appendChild(d);
+}
 
-  <script src="/static/script.js"></script>
+anime({
+  targets: '.dot',
+  scale: [
+    {value: 0.4, easing: 'easeOutSine', duration: 300},
+    {value: 1, easing: 'easeInOutQuad', duration: 800}
+  ],
+  delay: anime.stagger(30, {grid:[20,12], from:'center'})
+});
+
+/* THEME TOGGLE */
+const themeBtn=document.getElementById("themeToggle");
+themeBtn.onclick=()=>{
+  if(document.documentElement.dataset.theme==="light"){
+    document.documentElement.removeAttribute("data-theme");
+    themeBtn.textContent="Light";
+  } else {
+    document.documentElement.dataset.theme="light";
+    themeBtn.textContent="Dark";
+  }
+};
+
+/* LOGIN PANEL */
+const loginBtn=document.getElementById("loginBtn");
+const loginPanel=document.getElementById("loginPanel");
+const frost=document.getElementById("frostOverlay");
+const closeBtns=document.querySelectorAll(".close-btn");
+
+loginBtn.onclick=()=>{
+  loginPanel.classList.add("active");
+  frost.classList.add("active");
+};
+closeBtns.forEach(x=>x.onclick=()=>{
+  loginPanel.classList.remove("active");
+  frost.classList.remove("active");
+});
+
+  </script>
 </body>
 </html>
