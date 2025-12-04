@@ -1,20 +1,16 @@
-import time
-from locust import HttpUser,task,between
+from locust import HttpUser, task, between
+class AttackUser(HttpUser):
+    wait_time = between(0.001, 0.01)
 
-class QuickstartUser(HttpUser):
-    wait_time=between(1,5)
+    @task(10)
+    def hammer_frontend(self):
+        self.client.get("/")
 
-    @task
-    def hello_world(self):
-        self.client.get("/hello")
-        self.client.get("/world")
-    
-    @task(3)
-    def view_items(self):
-        for item_id in range(10):
-            self.client.get(f"/item?item={item_id}",name="/item")
-            time.sleep(1)
-    
-    def on_start(self):
-        self.client.get
+    @task(5)
+    def hammer_static(self):
+        self.client.get("/static/index.css", name="/static")
 
+    @task(5)
+    def hammer_heavy(self):
+        for i in range(200):
+            self.client.get("/", name="/home")
